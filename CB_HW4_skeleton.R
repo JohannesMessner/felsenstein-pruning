@@ -123,7 +123,26 @@ calculate_likelihood_from_subtree_likelihoods = function(N, Q,
     #                        at the second child node
     #   subtree2_branch_length: the length of the branch leading to the second child node
 
-    # ???
+    
+    likelihood_per_site <- matrix(nrow = N, ncol = 4)
+  
+    for (i in 1:N) {
+      for (x in transform_to_numbers(nucleotides)) {
+        L1 <- 0
+        L2 <- 0
+        
+        for (y in transform_to_numbers(nucleotides)) {
+          # compute transition probability matrices for the two branch lengths
+          P_1 <- expm(Q*subtree1_branch_length)
+          P_2 <- expm(Q*subtree2_branch_length)
+          
+          L1 <- L1 + P_1[x,y]*subtree1_likelihood
+          L2 <- L2 + P_2[x,y]*subtree2_likelihood
+        }
+        
+        likelihood_per_site[i,x] <- L1*L2
+      }
+    }
 
     # Return the per site nucleotide likelihoods on the internal node.
     #   likelihood_per_site: an N by 4 matrix representing the nucleotide likelihoods per site
