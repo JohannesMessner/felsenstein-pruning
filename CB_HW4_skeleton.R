@@ -101,9 +101,13 @@ create_TN93_Q_matrix = function(pi, alpha1, alpha2, beta) {
     
     Q <- matrix(nrow = 4, ncol = 4)
     Q[1,] <- row1
+    Q[1,1] <- -(Q[1,2]+Q[1,3]+Q[1,4])
     Q[2,] <- row2
+    Q[2,2] <- -(Q[2,1]+Q[2,3]+Q[2,4])
     Q[3,] <- row3
+    Q[3,3] <- -(Q[3,1]+Q[3,2]+Q[3,4])
     Q[4,] <- row4
+    Q[4,4] <- -(Q[4,1]+Q[4,2]+Q[4,3])
 
     # Return the transition rate matrix
     # Q: 4 by 4 matrix of rates
@@ -133,6 +137,8 @@ calculate_likelihood_from_subtree_likelihoods = function(N, Q,
         
         for (y in transform_to_numbers(nucleotides)) {
           # compute transition probability matrices for the two branch lengths
+          print(Q)
+          print(subtree1_branch_length)
           P_1 <- expm(Q*subtree1_branch_length)
           P_2 <- expm(Q*subtree2_branch_length)
           
