@@ -235,14 +235,21 @@ Felstensteins_pruning_loglikelihood = function(pi, alpha1, alpha2, beta, newick_
     N = nchar(sequences[[1]])
 
     # Initialize the Q matrix
-    # ???
+    Q <- create_TN93_Q_matrix(pi = pi, alpha1 = alpha1, alpha2 = alpha2, beta = beta)
     
     # Compute the likelihoods per site of the tree starting from the root
     root = length(tree$tip.label) + 1
     likelihood_per_site = get_subtree_likelihood(root, tree, sequences, Q)
     
     # Sum up the log likelihoods of each site
-    # ???
+    loglikelihood <- 0
+    for (i in 1:N) {
+      likelihood <- 0
+      for (x in transform_to_numbers(nucleotides)) {
+        likelihood <- likelihood + pi[x]*likelihood_per_site[i,x]
+      }
+      loglikelihood <- loglikelihood + log(likelihood)
+    }
 
     # Return the final log likelihood of the alignment on the given tree, a single number computed of the 
     # per site per nucleotide likelihoods at the root of the tree.
