@@ -158,7 +158,11 @@ get_likelihood_from_sequence = function(N, sequence) {
     #   N: number of sites in the alignment
     #   sequence: the sequence at the tip, encoded as a vector of nucleotide numeric values.
 
-    # ???
+    likelihood_per_site <- matrix(nrow = N, ncol = 4)
+    for (i in 1:N) {
+      likelihood_per_site[i,] <- c(0,0,0,0)
+      likelihood_per_site[i, sequence[i]] <- 1
+    }
 
     # Return the per site nucleotide likelihoods at the tip.
     #   likelihood_per_site: an N by 4 matrix representing the nucleotide likelihoods per site
