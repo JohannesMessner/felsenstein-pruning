@@ -79,8 +79,31 @@ create_TN93_Q_matrix = function(pi, alpha1, alpha2, beta) {
     #   alpha1: rate coefficient for the C <-> T transition
     #   alpha2: rate coefficient for the A <-> G transition
     #   beta: rate coefficient for transversions
-
-    # ???
+    
+    T_index <- get_number_from_nucleotide("T")
+    C_index <- get_number_from_nucleotide("C")
+    A_index <- get_number_from_nucleotide("A")
+    G_index <- get_number_from_nucleotide("G")
+    
+    a1_pi_c <- alpha1*pi[C_index]
+    b_pi_a  <- beta*pi[A_index]
+    b_pi_g  <- beta*pi[G_index]
+    a1_pi_t <- alpha1*pi[T_index]
+    b_pi_t  <- beta*pi[T_index]
+    b_pi_c  <- beta*pi[C_index]
+    a2_pi_g <- alpha2*pi[G_index]
+    a2_pi_a <- alpha2*pi[A_index]
+    
+    row1 <- c(NULL, a1_pi_c, b_pi_a, b_pi_g)
+    row2 <- c(a1_pi_t, NULL, b_pi_a, b_pi_g)
+    row3 <- c(b_pi_t, b_pi_c, NULL, a2_pi_g)
+    row4 <- c(b_pi_t, b_pi_c, a2_pi_a, NULL)
+    
+    Q <- matrix(nrow = 4, ncol = 4)
+    Q[1,] <- row1
+    Q[2,] <- row2
+    Q[3,] <- row3
+    Q[4,] <- row4
 
     # Return the transition rate matrix
     # Q: 4 by 4 matrix of rates
