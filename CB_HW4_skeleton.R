@@ -94,10 +94,10 @@ create_TN93_Q_matrix = function(pi, alpha1, alpha2, beta) {
     a2_pi_g <- alpha2*pi[G_index]
     a2_pi_a <- alpha2*pi[A_index]
     
-    row1 <- c(NULL, a1_pi_c, b_pi_a, b_pi_g)
-    row2 <- c(a1_pi_t, NULL, b_pi_a, b_pi_g)
-    row3 <- c(b_pi_t, b_pi_c, NULL, a2_pi_g)
-    row4 <- c(b_pi_t, b_pi_c, a2_pi_a, NULL)
+    row1 <- c(NA, a1_pi_c, b_pi_a, b_pi_g)
+    row2 <- c(a1_pi_t, NA, b_pi_a, b_pi_g)
+    row3 <- c(b_pi_t, b_pi_c, NA, a2_pi_g)
+    row4 <- c(b_pi_t, b_pi_c, a2_pi_a, NA)
     
     Q <- matrix(nrow = 4, ncol = 4)
     Q[1,] <- row1
