@@ -189,11 +189,26 @@ get_subtree_likelihood = function(node, tree, sequences, Q) {
     if (node <= length(tree$tip.label)) {
         # node is a tip: compute the likelihood for each site and each nucleotide on this node
 
-        # ???
+        sequence <- get_sequence_at_tip_node(node = node, tree = tree, sequences = sequences)
+        likelihood_per_site <- get_likelihood_from_sequence(N = length(sequence), sequence = sequence)
     } else {
         # node is an internal node: compute the likelihood for each site and each nucleotide on this node
 
-        # ???
+        children <- get_node_children(node = node, tree = tree)
+        child1 <- children[["child1"]]
+        child2 <- children[["child2"]]
+        branch1 <- children[["branch_length1"]]
+        branch2 <- children[["branch_length2"]]
+        
+        subtree1_likelihood <- get_subtree_likelihood(node = child1, tree = tree, sequences = sequences, Q = Q)
+        subtree2_likelihood <- get_subtree_likelihood(node = child2, tree = tree, sequences = sequences, Q = Q)
+        
+        
+        likelihood_per_site <- calculate_likelihood_from_subtree_likelihoods(N = N, Q = Q,
+                                                                             subtree1_branch_length = branch1,
+                                                                             subtree1_likelihood = subtree1_likelihood,
+                                                                             subtree2_branch_length = branch2,
+                                                                             subtree2_likelihood = subtree2_likelihood)
     }
 
     # Return the per site nucleotide likelihoods at this node.
