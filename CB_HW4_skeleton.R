@@ -137,8 +137,6 @@ calculate_likelihood_from_subtree_likelihoods = function(N, Q,
         
         for (y in transform_to_numbers(nucleotides)) {
           # compute transition probability matrices for the two branch lengths
-          print(Q)
-          print(subtree1_branch_length)
           P_1 <- expm(Q*subtree1_branch_length)
           P_2 <- expm(Q*subtree2_branch_length)
           
