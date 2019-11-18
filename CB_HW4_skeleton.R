@@ -131,17 +131,17 @@ calculate_likelihood_from_subtree_likelihoods = function(N, Q,
     likelihood_per_site <- matrix(nrow = N, ncol = 4)
   
     for (i in 1:N) {
-      for (x in transform_to_numbers(nucleotides)) {
+      for (x in transform_to_numbers("TCAG")) {
         L1 <- 0
         L2 <- 0
         
-        for (y in transform_to_numbers(nucleotides)) {
+        for (y in transform_to_numbers("TCAG")) {
           # compute transition probability matrices for the two branch lengths
           P_1 <- expm(Q*subtree1_branch_length)
           P_2 <- expm(Q*subtree2_branch_length)
           
-          L1 <- L1 + P_1[x,y]*subtree1_likelihood
-          L2 <- L2 + P_2[x,y]*subtree2_likelihood
+          L1 <- L1 + P_1[x,y]*subtree1_likelihood[i,y]
+          L2 <- L2 + P_2[x,y]*subtree2_likelihood[i,y]
         }
         
         likelihood_per_site[i,x] <- L1*L2
@@ -249,7 +249,7 @@ Felstensteins_pruning_loglikelihood = function(pi, alpha1, alpha2, beta, newick_
     loglikelihood <- 0
     for (i in 1:N) {
       likelihood <- 0
-      for (x in transform_to_numbers(nucleotides)) {
+      for (x in transform_to_numbers("TCAG")) {
         likelihood <- likelihood + pi[x]*likelihood_per_site[i,x]
       }
       loglikelihood <- loglikelihood + log(likelihood)
